@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.container {
+    max-width: 720px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-weight: 800;
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    color: #222;
+    letter-spacing: 1.2px;
+}
+
+input[type="text"] {
+    width: 70%;
+    padding: 14px 20px;
+    margin-right: 10px;
+    font-size: 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+button {
+    padding: 14px 28px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#results {
+    margin-top: 40px;
+    text-align: left;
+}
+
+/* Book card styles */
+.book {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px; /* Reduced gap for compactness */
+    background: #fff;
+    margin: 15px auto; /* Add space between cards */
+    max-width: 720px; /* Limit card width */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;    
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.book:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow for lift effect */
+    background-color: #f9f9ff; /* Slightly lighter background color */
+}
+
+.book img {
+    max-width: 120px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    flex-shrink: 0;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.book:hover img {
+    transform: scale(1.05); /* Slight zoom on the image */
+}
+
+.book h3 {
+    margin: 0 0 12px 0; /* Adjusted margin for spacing */
+    font-size: 1.6rem; /* Slightly smaller title */
+    font-weight: 700;
+    color: #222;
+    line-height: 1.2;
+}
+
+.book p {
+    margin: 4px 0; /* Reduced spacing for a cleaner layout */
+    font-size: 0.95rem; /* Slightly smaller font size */
+    color: #666; /* Softer text color */
+    line-height: 1.5; /* Better line spacing */
+}
+
+.book p.author {
+    font-weight: 600; /* Slightly bolder for emphasis */
+    color: #444; /* Darker color for the author */
+}
+
+.book p.year {
+    font-style: italic; /* Different style for the year */
+    color: #777; /* Subtle gray for differentiation */
+}
