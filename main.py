@@ -11,6 +11,10 @@ CACHE_EXPIRATION = 60 * 5  # cache for 5 minutes (300 seconds)
 def home():
     return send_from_directory('.', 'index.html')
 
+@app.route('/style.css')
+def css():
+    return send_from_directory('.', 'style.css')
+
 @app.route('/search', methods=['GET'])
 def search_books():
     query = request.args.get('q', '')
