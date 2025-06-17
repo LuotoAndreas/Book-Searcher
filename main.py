@@ -17,12 +17,11 @@ def search_books():
     if not query:
         return jsonify({"error": "No query provided"}), 400
     
-     # Check cache first
+    # Check cache first
     cached = cache.get(query)
     if cached:
         timestamp, data = cached
         if time.time() - timestamp < CACHE_EXPIRATION:
-            print(f"[CACHE HIT] Serving cached results for query: '{query}'")
             return jsonify(data)
 
     # Open Library API Request
