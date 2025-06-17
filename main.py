@@ -9,11 +9,7 @@ CACHE_EXPIRATION = 60 * 5  # cache for 5 minutes (300 seconds)
 
 @app.route('/')
 def home():
-    return send_from_directory('.', 'index.html')
-
-@app.route('/style.css')
-def css():
-    return send_from_directory('.', 'style.css')
+    return render_template("index.html")
 
 @app.route('/search', methods=['GET'])
 def search_books():
@@ -40,7 +36,6 @@ def search_books():
             "title": book.get("title"),
             "author": ", ".join(book.get("author_name", [])),
             "year": book.get("first_publish_year"),
-            ""
             "cover": f"https://covers.openlibrary.org/b/olid/{book.get('cover_edition_key')}-M.jpg"
             if book.get('cover_edition_key') else None
         }
