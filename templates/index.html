@@ -12,52 +12,63 @@
     <div class="container">
         <h1>Book Finder</h1>
         <input type="text" id="searchQuery" placeholder="Search for a book..." />
-        <button onclick="searchBooks()">Search</button>
+        <button id="searchButton" onclick="searchBooks()">Search</button>
+        <p class="instructions">Click on a book to toggle between details and description.</p>
     </div>
 
     <div id="results"></div>
     <script>
         async function searchBooks() {
             const query = document.getElementById('searchQuery').value;
-            const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
-            const results = await response.json();
-
+            const searchButton = document.getElementById('searchButton');
             const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = '';
 
-            results.forEach(book => {
-                const bookDiv = document.createElement('div');
-                bookDiv.className = 'book';
+            // Disable button and show loading text
+            searchButton.disabled = true;
+            searchButton.textContent = "Loading...";
 
-                // Initialize with the book information
-                let toggleBookView = true;
+            try {
+                const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+                const results = await response.json();
 
-                function renderContent() {
-                    if (toggleBookView) {
-                        bookDiv.innerHTML = `
-                            ${book.cover ? `<img src="${book.cover}" alt="${book.title} Cover" />` : '<p>No Cover Available</p>'}
-                            <h3>${book.title}</h3>
-                            <p class="author">${book.author || "Unknown Author"}</p>
-                            <p class="year">First Published: ${book.year || "N/A"}</p>
-                        `;
-                    } else {
-                        bookDiv.innerHTML = `
-                            <p>${book.description}</p>
-                        `;
+                resultsDiv.innerHTML = '';
+
+                results.forEach(book => {
+                    const bookDiv = document.createElement('div');
+                    bookDiv.className = 'book';
+
+                    let toggleBookView = true;
+
+                    function renderContent() {
+                        if (toggleBookView) {
+                            bookDiv.innerHTML = `
+                                ${book.cover ? `<img src="${book.cover}" alt="${book.title} Cover" />` : '<p>No Cover Available</p>'}
+                                <h3>${book.title}</h3>
+                                <p class="author">${book.author || "Unknown Author"}</p>
+                                <p class="year">First Published: ${book.year || "N/A"}</p>
+                            `;
+                        } else {
+                            bookDiv.innerHTML = `<p>${book.description || "No description available."}</p>`;
+                        }
                     }
-                }
 
-                // Initial render
-                renderContent();
-
-                // Toggle on click
-                bookDiv.addEventListener('click', () => {
-                    toggleBookView = !toggleBookView;
                     renderContent();
-                });
 
-                resultsDiv.appendChild(bookDiv);
-            });
+                    bookDiv.addEventListener('click', () => {
+                        toggleBookView = !toggleBookView;
+                        renderContent();
+                    });
+
+                    resultsDiv.appendChild(bookDiv);
+                });
+            } catch (error) {
+                resultsDiv.innerHTML = "<p>Failed to fetch results. Please try again.</p>";
+                console.error(error);
+            } finally {
+                // Re-enable button and reset text
+                searchButton.disabled = false;
+                searchButton.textContent = "Search";
+            }
         }
     </script>
 </body>

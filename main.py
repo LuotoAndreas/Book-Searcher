@@ -5,8 +5,8 @@ import time
 
 app = Flask(__name__)
 
-#cache = {}
-#CACHE_EXPIRATION = 60 * 5  # cache for 5 minutes (300 seconds)
+cache = {}
+CACHE_EXPIRATION = 60 * 5  # cache for 5 minutes (300 seconds)
 
 @app.route('/')
 def home():
@@ -30,25 +30,19 @@ def clean_description(desc):
     if not desc:
         return "No description available"
     
-    # Remove markdown links: [text](url) -> text
     desc = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', desc)
     
-    # Remove markdown bold/italic markers (e.g., **text**, *text*)
     desc = re.sub(r'(\*\*|\*)', '', desc)
     
-    # Split description into lines
     lines = desc.splitlines()
     
-    # Filter out lines starting with certain patterns
     filtered_lines = [
         line for line in lines
         if not (line.startswith('(') or line.startswith('http') or line.startswith('/http') or line.startswith('Contains'))
     ]
     
-    # Join back filtered lines and strip extra whitespace
     cleaned_desc = '\n'.join(filtered_lines).strip()
     
-    # Remove multiple newlines if any
     cleaned_desc = re.sub(r'\n+', '\n', cleaned_desc)
     
     return cleaned_desc if cleaned_desc else "No description available"
@@ -63,11 +57,11 @@ def search_books():
         return jsonify({"error": "No query provided"}), 400
 
     # Check cache first
-    #cached = cache.get(query)
-    #if cached:
-    #    timestamp, data = cached
-    #    if time.time() - timestamp < CACHE_EXPIRATION:
-    #        return jsonify(data)
+    cached = cache.get(query)
+    if cached:
+        timestamp, data = cached
+        if time.time() - timestamp < CACHE_EXPIRATION:
+            return jsonify(data)
 
     url = f"https://openlibrary.org/search.json?q={query}"
     response = requests.get(url)
@@ -92,7 +86,7 @@ def search_books():
         })
 
     # Store in cache
-    #cache[query] = (time.time(), books)
+    cache[query] = (time.time(), books)
     return jsonify(books)
 
 
