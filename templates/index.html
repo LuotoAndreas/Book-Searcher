@@ -17,48 +17,48 @@
 
     <div id="results"></div>
     <script>
-    async function searchBooks() {
-        const query = document.getElementById('searchQuery').value;
-        const response = await fetch(`/search?q=${query}`);
-        const results = await response.json();
+        async function searchBooks() {
+            const query = document.getElementById('searchQuery').value;
+            const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
+            const results = await response.json();
 
-        const resultsDiv = document.getElementById('results');
-        resultsDiv.innerHTML = '';
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
 
-        results.forEach(book => {
-            const bookDiv = document.createElement('div');
-            bookDiv.className = 'book';
+            results.forEach(book => {
+                const bookDiv = document.createElement('div');
+                bookDiv.className = 'book';
 
-            // Initialize with the book information
-            let toggleBookView = true;
+                // Initialize with the book information
+                let toggleBookView = true;
 
-            function renderContent() {
-                if (toggleBookView) {
-                    bookDiv.innerHTML = `
-                        ${book.cover ? `<img src="${book.cover}" alt="${book.title} Cover" />` : '<p>No Cover Available</p>'}
-                        <h3>${book.title}</h3>
-                        <p class="author">${book.author || "Unknown Author"}</p>
-                        <p class="year">First Published: ${book.year || "N/A"}</p>
-                    `;
-                } else {
-                    bookDiv.innerHTML = `
-                        <h3>Moi oon OOna :DDDD</h3>
-                    `;
+                function renderContent() {
+                    if (toggleBookView) {
+                        bookDiv.innerHTML = `
+                            ${book.cover ? `<img src="${book.cover}" alt="${book.title} Cover" />` : '<p>No Cover Available</p>'}
+                            <h3>${book.title}</h3>
+                            <p class="author">${book.author || "Unknown Author"}</p>
+                            <p class="year">First Published: ${book.year || "N/A"}</p>
+                        `;
+                    } else {
+                        bookDiv.innerHTML = `
+                            <p>${book.description}</p>
+                        `;
+                    }
                 }
-            }
 
-            // Initial render
-            renderContent();
-
-            // Toggle on click
-            bookDiv.addEventListener('click', () => {
-                toggleBookView = !toggleBookView;
+                // Initial render
                 renderContent();
-            });
 
-            resultsDiv.appendChild(bookDiv);
-        });
-    }
-</script>
+                // Toggle on click
+                bookDiv.addEventListener('click', () => {
+                    toggleBookView = !toggleBookView;
+                    renderContent();
+                });
+
+                resultsDiv.appendChild(bookDiv);
+            });
+        }
+    </script>
 </body>
 </html>
